@@ -1,33 +1,34 @@
 FROM node:lts-buster
 
-# Évite les prompts interactifs
+# Évite les prompts pendant l'installation
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Installation des dépendances système
+# Préparation de l’environnement système
 RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    gnupg \
+    software-properties-common && \
     apt-get install -y --no-install-recommends \
     ffmpeg \
     imagemagick \
-    libwebp-dev \
-    webp \
-    && apt-get upgrade -y && \
+    libwebp-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# Définir le dossier de travail
+# Dossier de travail
 WORKDIR /usr/src/app
 
-# Copier le fichier package.json et installer les dépendances
+# Dépendances Node.js
 COPY package.json ./
-
 RUN npm install && \
     npm install -g qrcode-terminal pm2
 
-# Copier tout le reste du projet
+# Copie de tous les fichiers
 COPY . .
 
-# Ouvrir le port de l'application
+# Port exposé
 EXPOSE 5000
 
-# Commande de démarrage
+# Lancement de l’application
 CMD ["npm", "start"]
