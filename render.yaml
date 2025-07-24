@@ -7,3 +7,11 @@ services:
     repo: https://github.com/vijitharanawakage/Ksmd-Session-Gen
     dockerfilePath: ./Dockerfile
     autoDeploy: true
+    envVars:
+      - key: PORT
+        value: 5000
+      - key: NODE_ENV
+        value: production
+      # Tu peux ajouter ici d'autres variables comme :
+      # - key: SESSION_ID
+      #   value: your-session-id
